@@ -1,0 +1,9 @@
+# Python dependencies for HW 5 (MCP server + agent team). Versions match .venv.
+# Install from HW 5 with:  .venv/Scripts/python -m pip install -r requirements.txt
+fastmcp==4.0.11
+pydantic==2.13.5
+pydantic-ai-slim[openai,mcp]==2.54.0
+openai==3.26.0
+python-dotenv==1.2.4
+fastapi==0.142.2
+uvicorn[standard]==0.54.0

@@ -1,0 +1,66 @@
+{
+  "run": {
+    "date": "2026-10-07",
+    "database": "data/campus_customs_new.db (reset to match data/campus_customs.db before the run)",
+    "model": "gpt-6-luna via Portkey",
+    "how_run": "Each ticket started with the 'Start agent team' button on the React dashboard (POST /tickets/{id}/run), in order 101, 102, 103.",
+    "starting_checking_balance": 3400.0,
+    "ending_checking_balance": 1000.0,
+    "note": "Practice figures in a local SQLite file; no real money moved and no message was sent."
+  },
+  "tickets": [
+    {
+      "id": 101,
+      "final_status": "complete (resolved)",
+      "short_outcome": "The size S tee is out of stock (0). Accounting confirmed the restock is already on order (invoice 501, $840, Bulldog Print Co, 5-day lead time, 3 days overdue). Customer service wrote a restock-delay memo to Tauhid Zaman, and the boss approved it. The memo is saved as approved_not_sent and was not sent. No cash change; invoice 501 is still unpaid.",
+      "agent_contributions": {
+        "boss": "Routed the ticket to inventory. Reviewed the original ticket, the invoice and the memo together, approved the memo (approval #1), confirmed a $0 cash impact, and closed the ticket.",
+        "inventory": "Checked stock with order_tool (0 in stock, short 1). Asked accounting about an outstanding invoice for the tee, then handed the ticket to customer service with the invoice details. Confirmed the shortfall and the restock again when customer service asked.",
+        "accounting": "Looked up invoices with payment_invoice_tool: invoice 501 is an open rush reprint of CC-TEE-WHITE S, $840, due 2026-08-28, 3 days overdue, 5-day vendor lead time.",
+        "customer_service": "Confirmed stock with inventory, then wrote a four-sentence restock-delay memo starting \"I hope this note finds you well.\" It checked the memo with memo_tool and saved it after the boss approved (memo #1, approved_not_sent).",
+        "facilities": "Not involved."
+      },
+      "tools_used": ["order_tool", "payment_invoice_tool", "memo_tool"],
+      "human_approvals": [],
+      "cash_change": 0.0
+    },
+    {
+      "id": 102,
+      "final_status": "complete (resolved)",
+      "short_outcome": "Rent of $2,400 to Elm City Properties for the Chapel Street shop (due 2026-09-02) was prepared, signed off by the boss, approved by a human on the dashboard, and paid. The lease rolled forward to next due 2026-10-02. Checking went from $3,400 to $1,000.",
+      "agent_contributions": {
+        "boss": "Routed the ticket to facilities. Signed off on the rent payment (approval #2) with a confirmed -$2,400 impact. After the human approved, sent the impact to accounting (approval #3) and closed the ticket.",
+        "facilities": "Checked the lease with rent_tool and confirmed the ticket matched it (landlord, due in 2 days). Prepared one pay_rent action. After the human approved, recorded payment #1 and rolled next_due to 2026-10-02.",
+        "accounting": "Applied the boss-confirmed -$2,400 to checking with account_tool (3,400 to 1,000).",
+        "inventory": "Not involved.",
+        "customer_service": "Not involved."
+      },
+      "tools_used": ["rent_tool", "account_tool"],
+      "human_approvals": [
+        {
+          "approval_id": 2,
+          "action": "pay_rent",
+          "amount": -2400.0,
+          "approved_by": "dashboard user (clicked by Claude on the dashboard at the user's instruction)",
+          "approved_at": "2026-10-07T00:12:23-04:00"
+        }
+      ],
+      "cash_change": -2400.0
+    },
+    {
+      "id": 103,
+      "final_status": "complete (resolved)",
+      "short_outcome": "Only 8 of the 20 size M hoodies are in stock (short 12), with no restock invoice. Because the full quantity isn't available, customer service made no price offer. It wrote a memo telling the Yale AI Club the quantity is currently not in stock and that we'll keep in touch if anything changes, and the boss approved it. The memo is saved as approved_not_sent and was not sent. No cash change.",
+      "agent_contributions": {
+        "boss": "Routed the ticket to customer service, which had to confirm full-quantity stock first. Checked the memo against inventory's answer, approved it (approval #4), confirmed a $0 cash impact, and closed the ticket.",
+        "customer_service": "Asked inventory whether all 20 hoodies could be supplied. With only 8 available, it made no offer and wrote a four-sentence not-in-stock memo, which it checked with memo_tool and saved after the boss approved (memo #2, approved_not_sent).",
+        "inventory": "Answered customer service: 8 in stock in Aisle A, short 12, no linked restock invoice, vendor lead time 5 days (order_tool, customer_service_tool search).",
+        "accounting": "Not involved.",
+        "facilities": "Not involved."
+      },
+      "tools_used": ["order_tool", "customer_service_tool", "memo_tool"],
+      "human_approvals": [],
+      "cash_change": 0.0
+    }
+  ]
+}

@@ -1,0 +1,307 @@
+[
+  {
+    "prompt": "Do we have the inventory in stock to support ticket one? And are there any vendors we need to contact?",
+    "tool": "order_tool",
+    "tool_input": {
+      "ticket_id": 101
+    },
+    "tool_output": {
+      "ticket_id": 101,
+      "requester": "Tauhid Zaman",
+      "notes": "Needs a tee in size S.",
+      "sku": "CC-TEE-WHITE",
+      "name": "Classic Bulldog Tee",
+      "size": "S",
+      "qty_requested": 1,
+      "qty_in_stock": 0,
+      "available": "no",
+      "shortfall": 1,
+      "location": "Aisle B",
+      "unit_cost": 8.0,
+      "list_price": 28.0,
+      "customer_pays": 28.0,
+      "profit_per_unit": 20.0,
+      "total_profit": 20.0,
+      "vendor_to_contact": {
+        "name": "Bulldog Print Co",
+        "specialty": "apparel reprint",
+        "lead_days": 5
+      },
+      "linked_invoice": {
+        "id": 501,
+        "amount": 840.0,
+        "due_date": "2026-08-28",
+        "status": "open",
+        "description": "Rush reprint CC-TEE-WHITE S"
+      }
+    },
+    "verification": {
+      "database": "data/campus_customs_new.db",
+      "all_match": true,
+      "checks": [
+        {
+          "field": "qty_requested",
+          "tool": 1,
+          "database": 1,
+          "match": true
+        },
+        {
+          "field": "qty_in_stock",
+          "tool": 0,
+          "database": 0,
+          "match": true
+        },
+        {
+          "field": "available",
+          "tool": "no",
+          "database": "no",
+          "match": true
+        },
+        {
+          "field": "location",
+          "tool": "Aisle B",
+          "database": "Aisle B",
+          "match": true
+        },
+        {
+          "field": "list_price",
+          "tool": 28.0,
+          "database": 28.0,
+          "match": true
+        },
+        {
+          "field": "unit_cost",
+          "tool": 8.0,
+          "database": 8.0,
+          "match": true
+        },
+        {
+          "field": "total_profit",
+          "tool": 20.0,
+          "database": 20.0,
+          "match": true
+        },
+        {
+          "field": "vendor_to_contact.name",
+          "tool": "Bulldog Print Co",
+          "database": "Bulldog Print Co",
+          "match": true
+        },
+        {
+          "field": "vendor_to_contact.lead_days",
+          "tool": 5,
+          "database": 5,
+          "match": true
+        },
+        {
+          "field": "linked_invoice.amount",
+          "tool": 840.0,
+          "database": 840.0,
+          "match": true
+        },
+        {
+          "field": "linked_invoice.due_date",
+          "tool": "2026-08-28",
+          "database": "2026-08-28",
+          "match": true
+        }
+      ]
+    }
+  },
+  {
+    "prompt": "What are our upcoming rent expenses based on the ticket, who are we paying them to, and is it aligned with the lease table?",
+    "tool": "rent_tool",
+    "tool_input": {
+      "ticket_id": 102
+    },
+    "tool_output": {
+      "ticket_id": 102,
+      "requester": "Elm City Properties",
+      "ticket_notes": "Email: shop rent due in 2 days.",
+      "space_name": "Chapel Street shop",
+      "landlord": "Elm City Properties",
+      "monthly_rent": 2400.0,
+      "next_due": "2026-09-02",
+      "lease_notes": null,
+      "days_until_due": 2,
+      "overdue": false
+    },
+    "verification": {
+      "database": "data/campus_customs_new.db",
+      "all_match": true,
+      "checks": [
+        {
+          "field": "space_name",
+          "tool": "Chapel Street shop",
+          "database": "Chapel Street shop",
+          "match": true
+        },
+        {
+          "field": "landlord",
+          "tool": "Elm City Properties",
+          "database": "Elm City Properties",
+          "match": true
+        },
+        {
+          "field": "monthly_rent",
+          "tool": 2400.0,
+          "database": 2400.0,
+          "match": true
+        },
+        {
+          "field": "next_due",
+          "tool": "2026-09-02",
+          "database": "2026-09-02",
+          "match": true
+        },
+        {
+          "field": "days_until_due",
+          "tool": 2,
+          "database": 2,
+          "match": true
+        },
+        {
+          "field": "ticket requester is the landlord",
+          "tool": "Elm City Properties",
+          "database": "Elm City Properties",
+          "match": true
+        },
+        {
+          "field": "ticket says due in 2 days",
+          "tool": 2,
+          "database": 2,
+          "match": true
+        }
+      ]
+    },
+    "note": "Added after the fact: this output will not reflect the latest database. It was captured before the agents ran, when rent was due 2026-09-02. Ticket 102 later paid that rent, so the lease's next due date in data/campus_customs_new.db is now 2026-10-02."
+  },
+  {
+    "prompt": "Can we support a bulk hoodie order? And what would our profit be at a price point that is 75% of what the current price point is?",
+    "tool": "override_tool",
+    "tool_input": {
+      "ticket_id": 103
+    },
+    "tool_output": {
+      "ticket_id": 103,
+      "requester": "Yale AI Club",
+      "notes": "Student org wants 20 hoodies, size M, asking for a bulk discount.",
+      "discount_requested": true,
+      "sku": "CC-HOOD-NAVY",
+      "name": "Basic Hoodie Big Yale",
+      "size": "M",
+      "qty_requested": 20,
+      "qty_in_stock": 8,
+      "available": "no",
+      "shortfall": 12,
+      "location": "Aisle A",
+      "unit_cost": 22.0,
+      "list_price": 58.0,
+      "standard_profit_per_unit": 36.0,
+      "standard_total_profit": 720.0,
+      "break_even_price": 22.0,
+      "scenarios": [
+        {
+          "label": "5% off",
+          "unit_price": 55.1,
+          "profit_per_unit": 33.1,
+          "total_profit": 662.0,
+          "change_vs_list": -58.0,
+          "margin_pct": 60.1
+        },
+        {
+          "label": "10% off",
+          "unit_price": 52.2,
+          "profit_per_unit": 30.2,
+          "total_profit": 604.0,
+          "change_vs_list": -116.0,
+          "margin_pct": 57.9
+        },
+        {
+          "label": "15% off",
+          "unit_price": 49.3,
+          "profit_per_unit": 27.3,
+          "total_profit": 546.0,
+          "change_vs_list": -174.0,
+          "margin_pct": 55.4
+        },
+        {
+          "label": "20% off",
+          "unit_price": 46.4,
+          "profit_per_unit": 24.4,
+          "total_profit": 488.0,
+          "change_vs_list": -232.0,
+          "margin_pct": 52.6
+        },
+        {
+          "label": "25% off",
+          "unit_price": 43.5,
+          "profit_per_unit": 21.5,
+          "total_profit": 430.0,
+          "change_vs_list": -290.0,
+          "margin_pct": 49.4
+        }
+      ]
+    },
+    "verification": {
+      "database": "data/campus_customs_new.db",
+      "all_match": true,
+      "checks": [
+        {
+          "field": "qty_requested",
+          "tool": 20,
+          "database": 20,
+          "match": true
+        },
+        {
+          "field": "qty_in_stock",
+          "tool": 8,
+          "database": 8,
+          "match": true
+        },
+        {
+          "field": "shortfall",
+          "tool": 12,
+          "database": 12,
+          "match": true
+        },
+        {
+          "field": "list_price",
+          "tool": 58.0,
+          "database": 58.0,
+          "match": true
+        },
+        {
+          "field": "unit_cost",
+          "tool": 22.0,
+          "database": 22.0,
+          "match": true
+        },
+        {
+          "field": "standard_total_profit",
+          "tool": 720.0,
+          "database": 720.0,
+          "match": true
+        },
+        {
+          "field": "75% price: unit_price",
+          "tool": 43.5,
+          "database": 43.5,
+          "match": true
+        },
+        {
+          "field": "75% price: profit_per_unit",
+          "tool": 21.5,
+          "database": 21.5,
+          "match": true
+        },
+        {
+          "field": "75% price: total_profit",
+          "tool": 430.0,
+          "database": 430.0,
+          "match": true
+        }
+      ]
+    }
+  }
+]

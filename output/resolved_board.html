@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Campus Customs: Resolved Board</title>
+<style>
+  :root { --yale: #00356b; --muted: #5f6b7a; --line: #d6e0ec; }
+  * { box-sizing: border-box; }
+  body {
+    margin: 0; font-family: "Segoe UI", system-ui, sans-serif; color: #1d2733;
+    background:
+      repeating-linear-gradient(-45deg, rgba(255,255,255,0.06) 0 22px, transparent 22px 44px),
+      linear-gradient(180deg, #00356b 0%, #002a55 100%);
+    background-attachment: fixed;
+  }
+  header { color: #fff; padding: 24px 32px 8px; max-width: 1100px; margin: 0 auto; }
+  header h1 { font-family: Georgia, serif; margin: 0; }
+  header p { opacity: 0.85; margin: 6px 0 0; }
+  nav { max-width: 1100px; margin: 12px auto 0; padding: 0 32px; display: flex; gap: 8px; flex-wrap: wrap; }
+  nav a { color: #fff; text-decoration: none; border: 1px solid rgba(255,255,255,0.4); border-radius: 999px; padding: 6px 14px; font-weight: 600; }
+  nav a:hover { background: rgba(255,255,255,0.15); }
+  main { max-width: 1100px; margin: 0 auto; padding: 20px 32px 48px; display: flex; flex-direction: column; gap: 24px; }
+  section { background: #fff; border-radius: 16px; padding: 22px 24px; box-shadow: 0 10px 30px rgba(0,20,50,0.25); scroll-margin-top: 16px; }
+  h2 { font-family: Georgia, serif; color: var(--yale); margin: 0 0 6px; }
+  .status { display: inline-block; border-radius: 999px; padding: 2px 10px; font-size: 0.85rem; font-weight: 700; margin-left: 8px; vertical-align: 3px; }
+  .resolved { background: #dff3e6; color: #1f9d55; }
+  .waiting { background: #fff4e0; color: #b7791f; }
+  .summary { margin: 8px 0 14px; line-height: 1.5; }
+  .meta { color: var(--muted); font-size: 0.9rem; margin-bottom: 12px; }
+  .shots { display: grid; gap: 14px; }
+  .shots.two { grid-template-columns: 1fr 1fr; }
+  figure { margin: 0; }
+  figcaption { color: var(--muted); font-size: 0.85rem; margin-top: 6px; }
+  .shot {
+    display: block; width: 100%; max-height: 640px; object-fit: cover; object-position: top;
+    border: 3px solid var(--line); border-radius: 12px; cursor: zoom-in; transition: border-color 0.2s;
+  }
+  .shot:hover { border-color: #286dc0; }
+  .lightbox {
+    position: fixed; inset: 0; background: rgba(0, 15, 35, 0.92); display: none; z-index: 10;
+    overflow: auto; cursor: zoom-out; padding: 24px;
+  }
+  .lightbox.open { display: block; }
+  .lightbox img { display: block; margin: 0 auto; width: min(1280px, 100%); border-radius: 8px; }
+  .lightbox .close { position: fixed; top: 14px; right: 20px; color: #fff; font-size: 0.95rem; background: rgba(255,255,255,0.15); border: none; border-radius: 999px; padding: 8px 14px; cursor: pointer; }
+  @media (max-width: 760px) { .shots.two { grid-template-columns: 1fr; } }
+</style>
+</head>
+<body>
+<header>
+  <h1>Campus Customs: Resolved Board</h1>
+  <p>Screenshots of the React agent dashboard as each ticket was resolved on 2026-10-07. <strong>Double-click any screenshot to blow it up</strong>; double-click again (or press Esc) to close.</p>
+</header>
+<nav>
+  <a href="#start">Starting board</a>
+  <a href="#t101">Ticket 101</a>
+  <a href="#t102">Ticket 102</a>
+  <a href="#t103">Ticket 103</a>
+</nav>
+
+<main>
+  <section id="start">
+    <h2>Starting board</h2>
+    <p class="meta">Before any agents ran · checking $3,400.00 · all three tickets open</p>
+    <figure>
+      <img class="shot" src="board_screenshots/00_start.png" alt="Dashboard before the run: three open tickets, checking balance $3,400">
+      <figcaption>Double-click to enlarge</figcaption>
+    </figure>
+  </section>
+
+  <section id="t101">
+    <h2>Ticket 101: Bulldog tee <span class="status resolved">✓ Resolved</span></h2>
+    <p class="summary">The size S tee is out of stock. Inventory checked with accounting, which found the restock already on order (invoice 501, 5-day lead time). Customer service wrote a restock-delay memo to Tauhid Zaman, and the boss approved it. The memo is saved, not sent. No cash change.</p>
+    <p class="meta">Right after the run · checking $3,400.00</p>
+    <figure>
+      <img class="shot" src="board_screenshots/01_ticket_101_resolved.png" alt="Dashboard with ticket 101 resolved">
+      <figcaption>Double-click to enlarge</figcaption>
+    </figure>
+  </section>
+
+  <section id="t102">
+    <h2>Ticket 102: Rent due <span class="status resolved">✓ Resolved</span></h2>
+    <p class="summary">Facilities prepared the $2,400 rent payment, and the boss signed off. A human clicked Accept payment, the payment was recorded, the lease rolled forward to 2026-10-02, and accounting took checking from $3,400 to $1,000. These are practice figures; no real money moved.</p>
+    <div class="shots two">
+      <figure>
+        <img class="shot" src="board_screenshots/02a_ticket_102_payment_waiting.png" alt="Dashboard with ticket 102 waiting and the payment approval panel">
+        <figcaption><span class="status waiting">Before</span> waiting for a human to approve the payment · double-click to enlarge</figcaption>
+      </figure>
+      <figure>
+        <img class="shot" src="board_screenshots/02b_ticket_102_resolved.png" alt="Dashboard with ticket 102 resolved and checking at $1,000">
+        <figcaption><span class="status resolved">After</span> payment accepted, ticket resolved, checking $1,000.00 · double-click to enlarge</figcaption>
+      </figure>
+    </div>
+  </section>
+
+  <section id="t103">
+    <h2>Ticket 103: Bulk hoodie discount <span class="status resolved">✓ Resolved</span></h2>
+    <p class="summary">Only 8 of the 20 size M hoodies are in stock, with no restock on order. Customer service made no price offer and wrote a memo to the Yale AI Club saying the quantity is currently not in stock and that we'll keep in touch if anything changes. The boss approved it. The memo is saved, not sent. No cash change.</p>
+    <p class="meta">All three tickets resolved · checking $1,000.00 · ending board</p>
+    <figure>
+      <img class="shot" src="board_screenshots/03_ticket_103_resolved.png" alt="Dashboard with all three tickets resolved">
+      <figcaption>Double-click to enlarge</figcaption>
+    </figure>
+  </section>
+</main>
+
+<div class="lightbox" id="lightbox" title="Double-click or press Esc to close">
+  <button class="close" type="button">Close ✕</button>
+  <img id="lightbox-img" alt="">
+</div>
+
+<script>
+  const box = document.getElementById('lightbox');
+  const big = document.getElementById('lightbox-img');
+  const close = () => box.classList.remove('open');
+  document.querySelectorAll('.shot').forEach(img => {
+    img.addEventListener('dblclick', () => {
+      big.src = img.src;
+      big.alt = img.alt;
+      box.classList.add('open');
+      box.scrollTop = 0;
+    });
+  });
+  box.addEventListener('dblclick', close);
+  box.querySelector('.close').addEventListener('click', close);
+  document.addEventListener('keydown', e => { if (e.key === 'Escape') close(); });
+</script>
+</body>
+</html>

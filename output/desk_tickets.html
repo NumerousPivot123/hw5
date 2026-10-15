@@ -1,0 +1,352 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Campus Customs: Desk Tickets</title>
+<style>
+  :root {
+    --yale-blue: #00356b;
+    --ink: #1f2933;
+    --muted: #616e7c;
+    --line: #d9e2ec;
+    --soft: #f5f7fa;
+  }
+  * { box-sizing: border-box; }
+  body {
+    margin: 0;
+    font-family: "Segoe UI", system-ui, -apple-system, sans-serif;
+    color: var(--ink);
+    background: var(--soft);
+  }
+  header {
+    background: var(--yale-blue);
+    color: #fff;
+    padding: 20px 32px;
+  }
+  header h1 { margin: 0; font-size: 1.4rem; font-weight: 600; }
+  header p { margin: 4px 0 0; opacity: 0.8; font-size: 0.9rem; }
+  nav {
+    display: flex;
+    gap: 4px;
+    padding: 0 32px;
+    background: #fff;
+    border-bottom: 1px solid var(--line);
+  }
+  nav button {
+    border: none;
+    background: none;
+    padding: 14px 18px;
+    font: inherit;
+    font-weight: 600;
+    color: var(--muted);
+    cursor: pointer;
+    border-bottom: 3px solid transparent;
+  }
+  nav button:hover { color: var(--yale-blue); }
+  nav button.active { color: var(--yale-blue); border-bottom-color: var(--yale-blue); }
+  main { max-width: 960px; margin: 0 auto; padding: 28px 32px 48px; }
+  .tab { display: none; }
+  .tab.active { display: block; }
+  .ticket-summary {
+    background: #fff;
+    border: 1px solid var(--line);
+    border-radius: 8px;
+    padding: 16px 20px;
+    margin-bottom: 20px;
+  }
+  .ticket-summary h2 { margin: 0 0 6px; font-size: 1.2rem; }
+  .ticket-summary p { margin: 0; color: var(--muted); }
+  section {
+    background: #fff;
+    border: 1px solid var(--line);
+    border-radius: 8px;
+    padding: 18px 20px;
+    margin-bottom: 20px;
+  }
+  section h3 {
+    margin: 0 0 14px;
+    font-size: 1rem;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    color: var(--yale-blue);
+  }
+  table { width: 100%; border-collapse: collapse; font-size: 0.95rem; }
+  th, td { text-align: left; padding: 10px 12px; border-top: 1px solid var(--line); vertical-align: top; }
+  th { width: 180px; color: var(--muted); font-weight: 600; }
+  tr:first-child th, tr:first-child td { border-top: none; }
+  code { background: var(--soft); padding: 1px 6px; border-radius: 4px; font-size: 0.9em; }
+  ul, ol { margin: 0; padding-left: 18px; }
+  li + li { margin-top: 4px; }
+  .empty { color: var(--muted); font-style: italic; }
+  .run-meta { margin: 0 0 12px; color: var(--muted); font-size: 0.9rem; }
+  .ok { color: #1f9d55; font-weight: 600; }
+  .match { color: #1f9d55; font-weight: 600; }
+  .big { font-size: 1.6rem; font-weight: 700; color: var(--yale-blue); margin: 0; }
+  .muted-inline { font-size: 0.9rem; font-weight: 400; color: var(--muted); }
+  .neg { color: #c0392b; font-weight: 600; white-space: nowrap; }
+  .cash-table th { width: auto; }
+  .grade-table th { width: auto; }
+  .grade { font-size: 1.3rem; font-weight: 700; color: var(--yale-blue); white-space: nowrap; }
+  section p { line-height: 1.55; margin: 0 0 10px; }
+  section p:last-child { margin-bottom: 0; }
+</style>
+</head>
+<body>
+<header>
+  <h1>Campus Customs: Desk Tickets</h1>
+  <p>Desk date 2026-08-31 &middot; expected vs. actual agent handling for each ticket</p>
+</header>
+
+<nav>
+  <button class="active" data-tab="t101">101</button>
+  <button data-tab="t102">102</button>
+  <button data-tab="t103">103</button>
+  <button data-tab="cash">Cash</button>
+  <button data-tab="reflection">Reflection</button>
+</nav>
+
+<main>
+  <div class="tab active" id="t101">
+    <div class="ticket-summary">
+      <h2>Ticket 101: Bulldog tee</h2>
+      <p>customer_order &middot; Tauhid Zaman &middot; CC-TEE-WHITE, size S, qty 1 &middot; "Needs a tee in size S."</p>
+    </div>
+    <section>
+      <h3>Expected</h3>
+      <table>
+        <tr><th>Boss calls first</th><td>Inventory agent</td></tr>
+        <tr><th>Expected path</th><td><ol>
+          <li><strong>Boss</strong> draws on the inventory agent first</li>
+          <li><strong>Inventory</strong> finds the shirt in question is not in stock, then goes to the accounting agent to check for invoices</li>
+          <li><strong>Accounting</strong> checks for an outstanding invoice for the shirt (a restock on order)</li>
+          <li><strong>Customer service</strong> prepares a memo reaching out to the customer: the item will be shipped, but with a delay due to a restock</li>
+          <li><strong>Boss</strong> looks back over the original ticket, the invoice and the memo, then approves</li>
+        </ol></td></tr>
+        <tr><th>Tools used</th><td><ul>
+          <li><code>order_tool</code> (inventory): inventory check</li>
+          <li><code>payment_invoice_tool</code> (accounting): invoice check</li>
+          <li><code>memo_tool</code> (customer service): memo to the customer</li>
+        </ul></td></tr>
+      </table>
+    </section>
+    <section>
+      <h3>Actual</h3>
+      <p class="run-meta">Run 2026-10-07 00:11:15 &ndash; 00:11:50 &middot; 35.2 s &middot; $0.0045 in model tokens &middot; outcome: <span class="ok">Resolved &#10003;</span></p>
+      <table>
+        <tr><th>Boss called first</th><td>Inventory agent &#10003; <span class="match">as expected</span></td></tr>
+        <tr><th>Actual path</th><td><ol>
+          <li><strong>Boss</strong> routed the ticket to inventory (a customer order for one size S tee)</li>
+          <li><strong>Inventory</strong> checked stock: 0 size S tees in Aisle B, short by 1</li>
+          <li><strong>Inventory &rarr; Accounting</strong>: asked whether invoice 501 is an outstanding restock. Accounting confirmed: open, $840, Bulldog Print Co, due 2026-08-28 (3 days overdue), 5-day lead time.</li>
+          <li><strong>Inventory &rarr; Customer service</strong>: handed over the ticket for restock-delay outreach, with the invoice details</li>
+          <li><strong>Customer service &rarr; Inventory</strong>: confirmed the full quantity can't be supplied and that the restock is on order (an extra check, not in the expected path)</li>
+          <li><strong>Customer service</strong> wrote a four-sentence restock-delay memo to Tauhid Zaman and ran it through the memo check</li>
+          <li><strong>Boss</strong> reviewed the ticket, the invoice and the memo together, approved the memo, and closed the ticket. The memo is saved as <em>approved_not_sent</em>; nothing was sent.</li>
+        </ol></td></tr>
+        <tr><th>Delegated</th><td><ul>
+          <li>Boss &rarr; Inventory (stock check)</li>
+          <li>Inventory &rarr; Accounting (outstanding invoice for the tee)</li>
+          <li>Inventory &rarr; Customer service (customer outreach)</li>
+          <li>Customer service &rarr; Inventory (stock confirmation)</li>
+        </ul></td></tr>
+        <tr><th>Tools used</th><td><ul>
+          <li><code>order_tool</code> (inventory, check &times;3) &#10003;</li>
+          <li><code>payment_invoice_tool</code> (accounting, read) &#10003;</li>
+          <li><code>memo_tool</code> (customer service: guidelines, check, save) &#10003;</li>
+        </ul></td></tr>
+        <tr><th>Result</th><td>No inventory change, no cash change. Invoice 501 is still open (not paid). Memo #1 to Tauhid Zaman is saved and not sent.</td></tr>
+        <tr><th>Expected vs actual</th><td><span class="match">Matched</span>: the path and all three expected tools happened in that order. The one extra step was customer service confirming stock with inventory before writing, as its prompt now requires.</td></tr>
+      </table>
+    </section>
+  </div>
+
+  <div class="tab" id="t102">
+    <div class="ticket-summary">
+      <h2>Ticket 102: Rent due</h2>
+      <p>rent_notice &middot; Elm City Properties &middot; lease 1 &middot; "Email: shop rent due in 2 days."</p>
+    </div>
+    <section>
+      <h3>Expected</h3>
+      <table>
+        <tr><th>Boss calls first</th><td>Facilities agent</td></tr>
+        <tr><th>Agents called</th><td><ul>
+          <li><strong>Facilities</strong>: handles the rent payment</li>
+          <li><strong>Accounting</strong>: makes any necessary changes to the cash balance</li>
+        </ul></td></tr>
+        <tr><th>Tools used</th><td><ul>
+          <li><code>rent_tool</code> (facilities)</li>
+          <li><code>account_tool</code> (accounting)</li>
+        </ul></td></tr>
+      </table>
+    </section>
+    <section>
+      <h3>Actual</h3>
+      <p class="run-meta">Agents 2026-10-07 00:12:02 &ndash; 00:12:12 (9.3 s, $0.0007) &middot; human approval 00:12:23 &middot; payment and cash 00:12:23 &ndash; 00:12:27 ($0.0004) &middot; outcome: <span class="ok">Resolved &#10003;</span></p>
+      <table>
+        <tr><th>Boss called first</th><td>Facilities agent &#10003; <span class="match">as expected</span></td></tr>
+        <tr><th>Actual path</th><td><ol>
+          <li><strong>Boss</strong> routed the rent notice to facilities</li>
+          <li><strong>Facilities</strong> checked the lease: Chapel Street shop, Elm City Properties, $2,400 due 2026-09-02 (2 days away), which matches the ticket. It prepared one rent payment.</li>
+          <li><strong>Boss</strong> signed off on the payment (cash impact &minus;$2,400). The ticket went to <em>waiting</em> for a human.</li>
+          <li><strong>Human</strong> clicked <em>Accept payment</em> on the dashboard (done by Claude at your instruction)</li>
+          <li><strong>Facilities</strong> recorded the rent payment and rolled the lease to next due 2026-10-02</li>
+          <li><strong>Boss &rarr; Accounting</strong>: confirmed the &minus;$2,400 impact. Accounting updated checking from $3,400 to $1,000.</li>
+          <li><strong>Boss</strong> closed the ticket</li>
+        </ol></td></tr>
+        <tr><th>Delegated</th><td><ul>
+          <li>Boss &rarr; Facilities (verify the lease, prepare the rent payment)</li>
+          <li>Boss &rarr; Human (approve the payment)</li>
+          <li>Boss &rarr; Accounting (apply the confirmed cash impact)</li>
+        </ul></td></tr>
+        <tr><th>Tools used</th><td><ul>
+          <li><code>rent_tool</code> (facilities: check, then pay_rent) &#10003;</li>
+          <li><code>account_tool</code> (accounting: adjust &minus;$2,400) &#10003;</li>
+        </ul></td></tr>
+        <tr><th>Result</th><td>Rent payment #1 recorded ($2,400, paid 2026-08-31). The lease's next due date is now 2026-10-02. Checking went from $3,400 to $1,000. These are practice figures in the local database; no real money moved.</td></tr>
+        <tr><th>Expected vs actual</th><td><span class="match">Matched exactly</span>, with the human approval step that was added after the expected path was written.</td></tr>
+      </table>
+    </section>
+  </div>
+
+  <div class="tab" id="t103">
+    <div class="ticket-summary">
+      <h2>Ticket 103: Bulk hoodie discount</h2>
+      <p>price_override &middot; Yale AI Club &middot; CC-HOOD-NAVY, size M, qty 20 &middot; "Student org wants 20 hoodies, size M, asking for a bulk discount."</p>
+    </div>
+    <section>
+      <h3>Expected</h3>
+      <table>
+        <tr><th>Boss calls first</th><td>Customer service agent</td></tr>
+        <tr><th>Expected path</th><td><ol>
+          <li><strong>Boss</strong> calls the customer service agent first</li>
+          <li><strong>Customer service</strong> verifies inventory with the inventory agent</li>
+          <li><strong>Inventory</strong> finds there is not enough inventory for the bulk order</li>
+          <li><strong>Customer service</strong> writes a memo to the customer</li>
+          <li><strong>Boss</strong> reviews the memo for approval</li>
+        </ol></td></tr>
+        <tr><th>Tools used</th><td><ul>
+          <li><code>override_tool</code> (customer service): price override economics</li>
+          <li><code>order_tool</code> (inventory): inventory check</li>
+          <li><code>memo_tool</code> (customer service): memo to the customer</li>
+        </ul></td></tr>
+      </table>
+    </section>
+    <section>
+      <h3>Actual</h3>
+      <p class="run-meta">Run 2026-10-07 00:12:41 &ndash; 00:13:05 &middot; 23.8 s &middot; $0.0014 in model tokens &middot; outcome: <span class="ok">Resolved &#10003;</span></p>
+      <table>
+        <tr><th>Boss called first</th><td>Customer service agent &#10003; <span class="match">as expected</span></td></tr>
+        <tr><th>Actual path</th><td><ol>
+          <li><strong>Boss</strong> routed the price override to customer service, which had to confirm full-quantity stock before considering a discount</li>
+          <li><strong>Customer service &rarr; Inventory</strong>: asked if all 20 size M hoodies are available. Inventory answered 8 in stock (Aisle A), short by 12, with no linked restock invoice.</li>
+          <li><strong>Customer service</strong> made <strong>no price offer</strong>, because the full quantity isn't available. It wrote a four-sentence memo to the Yale AI Club saying the quantity is currently not in stock and that we'll keep in touch if anything changes.</li>
+          <li><strong>Boss</strong> checked the memo against the inventory answer and approved it, then closed the ticket. The memo is saved as <em>approved_not_sent</em>; nothing was sent.</li>
+        </ol></td></tr>
+        <tr><th>Delegated</th><td><ul>
+          <li>Boss &rarr; Customer service (price override)</li>
+          <li>Customer service &rarr; Inventory (stock for 20 size M)</li>
+        </ul></td></tr>
+        <tr><th>Tools used</th><td><ul>
+          <li><code>order_tool</code> (inventory, check &times;2) &#10003;</li>
+          <li><code>memo_tool</code> (customer service: guidelines, check, save) &#10003;</li>
+          <li><code>customer_service_tool</code> (inventory, search): not expected; used while answering customer service</li>
+          <li><code>override_tool</code>: <em>not used</em>. With stock short, there was no offer to price.</li>
+        </ul></td></tr>
+        <tr><th>Result</th><td>No sale, no inventory change, no cash change. Memo #2 to the Yale AI Club is saved and not sent.</td></tr>
+        <tr><th>Expected vs actual</th><td><span class="match">Matched</span> the path: boss to customer service, inventory finding too little stock, then a memo approved by the boss. One expected tool didn't run: <code>override_tool</code> was skipped under the new rule that customer service makes no offer when the full quantity isn't available.</td></tr>
+      </table>
+    </section>
+  </div>
+
+  <div class="tab" id="cash">
+    <div class="ticket-summary">
+      <h2>Cash: checking account</h2>
+      <p>How the checking balance moved as each ticket was resolved (practice figures in campus_customs_new.db; no real money moved).</p>
+    </div>
+    <section>
+      <h3>Starting balance</h3>
+      <p class="big">$3,400.00 <span class="muted-inline">as of 2026-08-31</span></p>
+    </section>
+    <section>
+      <h3>Changes by ticket</h3>
+      <table class="cash-table">
+        <tr><th>Ticket</th><th>Change</th><th>Balance after</th><th>Why</th></tr>
+        <tr><td><strong>101</strong> Bulldog tee</td><td>$0.00</td><td>$3,400.00</td><td>No sale happened, because the tee is out of stock. The team only saved a restock-delay memo, which has no cash impact. Invoice 501 ($840) was looked up but not paid.</td></tr>
+        <tr><td><strong>102</strong> Rent due</td><td class="neg">&minus;$2,400.00</td><td>$1,000.00</td><td>Facilities prepared the September rent, the boss signed off, and a human clicked Accept payment. Accounting applied the boss-confirmed &minus;$2,400 (approval #3).</td></tr>
+        <tr><td><strong>103</strong> Bulk hoodie discount</td><td>$0.00</td><td>$1,000.00</td><td>No sale or payment: there's not enough stock, so no offer was made, and the team only saved a "not in stock" memo.</td></tr>
+      </table>
+    </section>
+    <section>
+      <h3>Ending balance</h3>
+      <p class="big">$1,000.00 <span class="muted-inline">as of 2026-08-31</span></p>
+      <p>&#10003; Matches <code>cash_accounts</code> in the working database (checking = 1000.0) and the checking balance shown in the top right of the dashboard. Check: $3,400.00 + $0.00 &minus; $2,400.00 + $0.00 = $1,000.00.</p>
+    </section>
+  </div>
+
+  <div class="tab" id="reflection">
+    <div class="ticket-summary">
+      <h2>Reflection</h2>
+      <p>How the agent team performed on tickets 101&ndash;103, what it can and can't do yet, and what we'd build next.</p>
+    </div>
+
+    <section>
+      <h3>Am I happy with the agents?</h3>
+      <table class="grade-table">
+        <tr><th>Ticket</th><th>Grade</th><th>Why</th></tr>
+        <tr>
+          <td><strong>102</strong> Rent due</td><td class="grade">A</td>
+          <td>The agents correctly recognized the upcoming rent expense and subtracted the right amount ($2,400) from the checking account. They also updated the lease, so the dashboard shows that this month's rent is paid and when the next rent payment is due (2026-10-02).</td>
+        </tr>
+        <tr>
+          <td><strong>101</strong> Bulldog tee</td><td class="grade">A&minus;</td>
+          <td>The inventory agent correctly recognized that there wasn't enough stock to fill the order. It worked with the accounting and customer service agents to prepare a note telling the customer there would be a delay while the restock on invoice 501 is fulfilled. <em>Improvement:</em> the team can't yet tell when the restock actually arrives. Ideally it would notice the new inventory, tell the boss agent so the tee can ship, and have the customer service agent follow up with the customer. This may need a new supplier agent that talks to suppliers and tracks updates on orders.</td>
+        </tr>
+        <tr>
+          <td><strong>103</strong> Bulk hoodie discount</td><td class="grade">B+</td>
+          <td>The agents correctly recognized that there weren't enough hoodies in stock to fulfill the bulk order. <em>Critique:</em> the memo only said we can't fulfill the order because inventory is short. The design can be made more flexible here: ideally the reply would say we're working to get more inventory, and that we could send the 8 we have on hand right now. A new supplier agent could even be notified automatically when customer service sees we need more hoodies, and order them right away, so we don't lose the business.</td>
+        </tr>
+      </table>
+    </section>
+
+    <section>
+      <h3>Expected vs. actual</h3>
+      <p>The actual paths largely matched the expected plans laid out beforehand. The one real difference was the bulk discount ticket (103). I expected a more detailed response from customer service than saying the order can't be fulfilled because we only have 8 in stock (see above). With a more flexible response to tickets like this, the agents would have fully met their mandate. As it is, they performed well and did what was asked of them. They also followed our privacy and safety guidelines throughout: no memo was ever sent, and money moved only when expected, after a human approved the payment.</p>
+    </section>
+
+    <section>
+      <h3>One agent with tools vs. a team of agents</h3>
+      <p><strong>Where a single agent would be simpler.</strong> Longer processes that span several agents could be more streamlined with one agent. Ticket 101 is an example: check inventory, find it lacking, see how that affects the ticket, write the memo, get the boss's approval, and update (or not update) the checking account. With a team, new information has to be passed from agent to agent, including to the boss, at every step. The more of those hand-offs there are, the more chance some information or context is lost along the way.</p>
+      <p><strong>Where the team is better.</strong> Each agent is a designated expert in one key area of the business: stock, money, the lease, or customers. That helps prevent mistakes and promotes efficiency. A single agent with a long list of tools is more likely to get confused or miss something, which is less likely to happen here.</p>
+    </section>
+
+    <section>
+      <h3>Three things the agents can do</h3>
+      <ul>
+        <li><strong>Find where an item is in the shop.</strong> The inventory agent can check which aisle an item is in, along with its stock by size.</li>
+        <li><strong>Process an invoice and its effect on cash.</strong> The accounting agent can look up a vendor invoice, prepare the payment, and update the checking account once it's approved.</li>
+        <li><strong>Answer a customer's product question.</strong> When a ticket comes in from a customer asking about a product, the customer service agent can check stock with inventory and write a reply for the boss to approve.</li>
+      </ul>
+    </section>
+
+    <section>
+      <h3>Three things the agents can't do yet, and how we'd add them</h3>
+      <ul>
+        <li><strong>Finish an order automatically when the restock arrives.</strong> Today ticket 101 can't be completed when the reprint for invoice 501 comes in unless someone opens a new ticket. <em>How:</em> add an agent connected to the shop's inbox that sees the delivery come in. It would then coordinate with the boss, inventory and customer service agents to add the stock, ship the order and tell the customer.</li>
+        <li><strong>Refill inventory on its own.</strong> Nothing reorders stock when it runs low. <em>How:</em> add an inventory tool that flags when an item drops below a threshold (for example, fewer than 5 left). It would pass that to a new supplier agent, which writes a note to the right supplier. Before anything is sent, it checks with accounting that there's enough money in the bank.</li>
+        <li><strong>Predict what's coming.</strong> There's no prediction today, so the team can't anticipate upcoming demand or expenses and work ahead. <em>How:</em> once the store has enough history in a purchase and expense database, add a prediction agent with a historical-analysis tool and an alert tool. It would tell you what to expect next, explain why, and ask whether you want to act. For example, if it sees when jackets usually start selling, it could alert you a week ahead to buy jacket inventory. The alerts would appear in their own section of the dashboard.</li>
+      </ul>
+    </section>
+  </div>
+</main>
+
+<script>
+  document.querySelectorAll("nav button").forEach(button => {
+    button.addEventListener("click", () => {
+      document.querySelectorAll("nav button, .tab").forEach(el => el.classList.remove("active"));
+      button.classList.add("active");
+      document.getElementById(button.dataset.tab).classList.add("active");
+    });
+  });
+</script>
+</body>
+</html>
